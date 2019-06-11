@@ -3,11 +3,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var movieRouter = require('./routes/movie');
+var todoRouter = require('./routes/todos');
 
 var app = express();
+app.use(require('connect-history-api-fallback')());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,9 +23,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.user(
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    store: new FileStore()
+  })
+);
 
 app.use('/', indexRouter);
+
+app.use('/login', (req, res, next) => {
+  res.send('ok');
+});
 app.use('/users', usersRouter);
+app.use('/movie', movieRouter);
+app.use('/todos', todoRouter);
+app.use('/me', (req, res, next) => {
+  res.send('me');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

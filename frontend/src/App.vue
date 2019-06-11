@@ -1,14 +1,30 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>-->
-    <router-view/>
+    <div v-if="isUser">
+      <h2>User Page</h2>
+      <Menus></Menus>
+      <router-view/>
+    </div>
+    <div v-else>
+      <h2>Register</h2>
+      <Register></Register>
+    </div>
   </div>
 </template>
 <script>
-export default {};
+import Menus from "./components/Menus.vue";
+import Register from "./components/Register.vue";
+
+import { mapState } from "vuex";
+
+export default {
+  data() {
+    return {
+      ...mapState(["isUser"])
+    };
+  },
+  components: { Register, Menus }
+};
 </script>
 
 
@@ -29,5 +45,9 @@ export default {};
       color: #42b983;
     }
   }
+}
+.wrap {
+  margin: 0 auto;
+  width: 600px;
 }
 </style>

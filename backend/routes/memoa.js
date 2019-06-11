@@ -3,13 +3,11 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  // res.send('respond with a resource');
-  // console.log(req.body.email);
-  res.send({ data: 'ok' });
+  res.send('respond with a resource');
 });
 
 router.post('/', function(req, res, next) {
-  res.send({ data: 'ok' });
+  console.log(req);
 });
 
 module.exports = router;
