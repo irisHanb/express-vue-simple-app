@@ -14,7 +14,8 @@ export default {
   },
   created() {
     this.$http.get("/todos").then(res => {
-      this.list = res.data;
+      console.log(res.data);
+      // this.list = res.data;
     });
   }
 };

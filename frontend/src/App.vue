@@ -1,29 +1,33 @@
 <template>
   <div id="app">
-    <div v-if="isUser">
-      <h2>User Page</h2>
-      <Menus></Menus>
-      <router-view/>
-    </div>
-    <div v-else>
-      <h2>Register</h2>
-      <Register></Register>
-    </div>
+    <router-view/>
   </div>
 </template>
 <script>
 import Menus from "./components/Menus.vue";
-import Register from "./components/Register.vue";
+import Register from "./views/Register.vue";
 
 import { mapState } from "vuex";
 
 export default {
   data() {
-    return {
-      ...mapState(["isUser"])
-    };
+    return {};
   },
-  components: { Register, Menus }
+  computed: {
+    ...mapState(["user"])
+  },
+  components: { Register, Menus },
+  created() {
+    // console.log(JSON.parse(localStorage.user));
+    if (localStorage.user) {
+      // this.login(localStorage.user);
+      this.$store.commit("login", JSON.parse(localStorage.user));
+      this.$router.push({ name: "home" });
+    } else {
+      this.$router.push({ name: "register" });
+    }
+  },
+  mehtods: {}
 };
 </script>
 

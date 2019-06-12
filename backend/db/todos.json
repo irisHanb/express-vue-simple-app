@@ -1,1 +1,8 @@
-[{ "id": 1, "text": "dsfsfsaf", "done": false }]
+[
+  { "id": 1, "text": "dsfsfsaf", "done": false },
+  { "id": 2, "text": "dsfsfsaf", "done": false },
+  { "id": 3, "text": "dsfsfsaf", "done": false },
+  { "id": 4, "text": "dsfsfsaf", "done": false },
+  { "id": 5, "text": "dsfsfsaf", "done": false },
+  { "id": 6, "text": "dsfsfsaf", "done": false }
+]

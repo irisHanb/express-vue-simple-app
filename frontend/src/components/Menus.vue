@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <router-link to="/">Home</router-link>
+  <div class="user">
+    <div class="user__header"></div>
 
-    <a href v-if="isAuthenticated" @click.prevent="onClickLogout">Logout</a>
-    <router-link to="/login" v-else>Login</router-link>
-
-    <router-link to="/me">Me</router-link>
+    <a @click.prevent="onClickLogout">Logout</a>
   </div>
 </template>
 <script>

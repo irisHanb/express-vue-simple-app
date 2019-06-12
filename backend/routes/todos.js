@@ -3,7 +3,9 @@ var router = express.Router();
 var todos = require('../db/todos.json');
 
 router.get('/', function(req, res, next) {
-  console.log(todos);
+  console.log('toddos>>> ');
+
+  // console.log(todos);
   res.send(todos);
 });
 

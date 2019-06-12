@@ -3,39 +3,55 @@ import Vuex from 'vuex';
 import axios from 'axios';
 
 Vue.use(Vuex);
-const enhanceAccessToeken = () => {
-  const { accessToken } = localStorage;
-  if (!accessToken) return;
-  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-};
-enhanceAccessToeken();
 
 export default new Vuex.Store({
   state: {
-    isUser: false,
+    user: null,
     accessToken: null
   },
   getters: {},
   mutations: {
-    LOGIN(state, { accessToken }) {
-      state.accessToken = accessToken;
-      localStorage.accessToken = accessToken;
+    join(state, user) {
+      localStorage.user = JSON.stringify(user);
+      console.log(localStorage.user);
+      state.user = user;
     },
-    LOGOUT(state) {
-      state.accessToken = null;
+    login(state, user) {
+      // console.log(user.id);
+      localStorage.user = JSON.stringify(user);
+      state.user = user;
+    },
+    logout(state, user) {
+      delete localStorage.user;
+      console.log('logout> ', localStorage.user);
+      state.user = null;
     }
   },
   actions: {
-    LOGIN({ commit }, { email, password }) {
-      return axios.post('/login', { email, password }).then(({ data }) => {
-        console.log(data);
-        // axios.defaults.headers.common['Authorization'] = `Bearer ${
-        //   data.accessToken
-        // }`;
+    join({ commit }, user) {
+      console.log(user);
+      return axios.post('/join', { user }).then(res => {
+        console.log(res);
+        commit('join', res.data.user);
       });
     },
-    LOGOUT({ commit }) {
-      commit('LOGOUT');
+    login({ commit }, user) {
+      return axios.post('/login', { user }).then(res => {
+        // console.log(res.data);
+        const data = res.data;
+        if (data.status === 'matched') {
+          commit('login', res.data.user);
+        } else {
+          alert(data.msg);
+          return;
+        }
+      });
+    },
+    logout({ commit }) {
+      return axios.post('/logout', {}).then(res => {
+        console.log(res.data);
+        commit('logout');
+      });
     }
   }
 });

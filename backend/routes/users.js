@@ -8,8 +8,4 @@ router.get('/', function(req, res, next) {
   res.send({ data: 'ok' });
 });
 
-router.post('/', function(req, res, next) {
-  res.send({ data: 'ok' });
-});
-
 module.exports = router;
