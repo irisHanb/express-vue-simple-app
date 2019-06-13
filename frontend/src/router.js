@@ -1,24 +1,22 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import { nesting } from 'postcss-selector-parser';
-// import Home from './views/Home.vue';
+import store from './store';
 
 Vue.use(Router);
+
+const requireAuth = () => (to, from, next) => {
+  if (store.getters.isAuthenticated) return next();
+  next('/register');
+};
 
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/register',
-      name: 'register',
-      component: () =>
-        import(/* webpackChunkName: "about" */ './views/Register.vue')
-    },
-    {
       path: '/',
       name: 'home',
-      // beforeEnter: requireAuth(),
+      beforeEnter: requireAuth(),
       component: () =>
         import(/* webpackChunkName: "greeting" */ './views/Home.vue'),
       children: [
@@ -31,6 +29,12 @@ export default new Router({
           component: () => import('./components/memos/MemoList.vue')
         }
       ]
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Register.vue')
     }
   ]
 });

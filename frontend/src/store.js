@@ -4,43 +4,51 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
+const enhanceAccessToeken = () => {
+  const { accessToken } = localStorage;
+  if (!accessToken) return;
+  // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+};
+enhanceAccessToeken();
+
 export default new Vuex.Store({
   state: {
+    userName: null,
+    userPw: null,
     user: null,
     accessToken: null
   },
-  getters: {},
+  getters: {
+    isAuthenticated(state) {
+      state.accessToken = state.accessToken || localStorage.accessToken;
+      return state.accessToken;
+    }
+  },
   mutations: {
-    join(state, user) {
-      localStorage.user = JSON.stringify(user);
-      console.log(localStorage.user);
-      state.user = user;
+    join(state) {
+      localStorage.accessToken = 'ok';
+      state.accessToken = 'ok';
     },
-    login(state, user) {
-      // console.log(user.id);
-      localStorage.user = JSON.stringify(user);
-      state.user = user;
+    login(state) {
+      localStorage.accessToken = 'ok';
+      state.accessToken = 'ok';
     },
-    logout(state, user) {
-      delete localStorage.user;
-      console.log('logout> ', localStorage.user);
-      state.user = null;
+    logout(state) {
+      state.accessToken = null;
+      delete localStorage.accessToken;
     }
   },
   actions: {
-    join({ commit }, user) {
-      console.log(user);
-      return axios.post('/join', { user }).then(res => {
-        console.log(res);
-        commit('join', res.data.user);
+    join({ commit }, { name, pw }) {
+      return axios.post('/join', { name, pw }).then(res => {
+        commit('join');
       });
     },
-    login({ commit }, user) {
-      return axios.post('/login', { user }).then(res => {
-        // console.log(res.data);
+    login({ commit }, { name, pw }) {
+      return axios.post('/login', { name, pw }).then(res => {
         const data = res.data;
         if (data.status === 'matched') {
-          commit('login', res.data.user);
+          commit('login');
         } else {
           alert(data.msg);
           return;
@@ -49,7 +57,6 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       return axios.post('/logout', {}).then(res => {
-        console.log(res.data);
         commit('logout');
       });
     }

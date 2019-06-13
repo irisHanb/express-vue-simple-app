@@ -1,15 +1,13 @@
 <template>
   <div class>
     <div class="header">
-      <h2>Greeting>>>>>>></h2>
-      <p v-if="user">{{user.id}} 님 반갑습니다.</p>
+      <h2></h2>
+      <span v-if="user">{{user.id}} 님 반갑습니다.</span>
       <a href @click.prevent="onLogout">logout</a>
-      <!-- <router-link to="/">logout</router-link> -->
-      <!-- <a href @click.prevent="logout">Logout</a> -->
     </div>
     <nav>
-      <router-link to="/home/todos">todos</router-link>
-      <router-link to="/home/memos">memos</router-link>
+      <router-link to="/todos">todos</router-link>
+      <router-link to="/memos">memos</router-link>
     </nav>
     <div class="view">
       <router-view></router-view>
@@ -23,7 +21,9 @@ import { mapState } from "vuex";
 
 export default {
   components: { Menus },
-  created() {},
+  created() {
+    this.$http.get("/").then(res => console.log(res));
+  },
   computed: {
     ...mapState(["user"])
   },

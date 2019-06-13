@@ -1,11 +1,24 @@
 <template>
   <div class="register wrap">
+    <h2 class="page-title">Register</h2>
     <form action>
       <div class="form-field">
-        <input type="text" placeholder="아이디를 입력하세요." v-model="id" id="email">
+        <input
+          type="text"
+          placeholder="아이디를 입력하세요."
+          v-model="name"
+          id="name"
+          v-validate="'required'"
+        >
       </div>
       <div class="form-field">
-        <input type="password" placeholder="비밀번호를 입력해주세요." v-model="pw" id="password">
+        <input
+          type="password"
+          placeholder="비밀번호를 입력해주세요."
+          v-model="pw"
+          id="pw"
+          v-validate="'required'"
+        >
       </div>
       <div class="btns">
         <button type="button" @click="onJoin">회원가입</button>
@@ -19,7 +32,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      id: null,
+      name: null,
       pw: null
     };
   },
@@ -31,31 +44,33 @@ export default {
   methods: {
     // ...mapActions(["join"]),
     onJoin() {
-      if (this.id === null || this.pw == null) {
-        alert("아이디 패스워드를 입력해주세요.");
-        return;
-      }
-
-      const user = { id: this.id, pw: this.pw };
-      this.$store.dispatch("join", user).then(res => {
-        // console.log(res.data);
-        this.goHome();
-      });
+      this.checkForm();
+      this.$store
+        .dispatch("join", { name: this.name, pw: this.pw })
+        .then(res => {
+          this.goHome();
+        });
     },
     onLogin() {
-      if (this.id === null || this.pw == null) {
-        alert("아이디 패스워드를 입력해주세요.");
-        return;
-      }
-
-      const user = { id: this.id, pw: this.pw };
-      this.$store.dispatch("login", user).then(res => {
-        this.goHome();
-      });
+      this.checkForm();
+      this.$store
+        .dispatch("login", { name: this.name, pw: this.pw })
+        .then(res => {
+          this.goHome();
+        });
     },
     goHome() {
-      console.log("go> home");
       this.$router.push({ name: "home" });
+    },
+    checkForm() {
+      if (this.name === null || this.name.length <= 0) {
+        alert("아이디 입력해주세요.");
+        return;
+      }
+      if (this.pw === null || this.pw.length <= 0) {
+        alert("패스워드를 입력해주세요.");
+        return;
+      }
     }
   }
 };

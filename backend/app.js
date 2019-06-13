@@ -15,7 +15,7 @@ var app = express();
 app.use(require('connect-history-api-fallback')());
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+// app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'pug');
 
 app.use(logger('dev'));
@@ -34,6 +34,7 @@ app.use(
 );
 
 app.use('/', indexRouter);
+// app.use('/todos', todoRouter);
 app.use('/todos', todoRouter);
 
 // app.use('/login', (req, res, next) => {

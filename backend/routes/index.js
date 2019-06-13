@@ -1,10 +1,17 @@
 var express = require('express');
 var router = express.Router();
+const userDB = require('../db/user.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  // req.session.destroy();
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  res.send('hi');
+  // res.sendFile(path.join(__dirname, '../public', 'index.html'));
+});
+
+// ? post는 없나?
+router.post('/', function(req, res, next) {
+  console.log('/ post');
+  res.send('post');
 });
 
 router.get('/register', function(req, res, next) {});
@@ -26,52 +33,42 @@ router.get('/home', function(req, res, next) {
 });
 
 //=== join
-// router.get('/join', function(req, res, next) {
-//   res.send('join');
-// });
-
-router.post('/join', function(req, res, next) {
-  if (!req.session.users) req.session.users = [];
-  req.session.users.push(req.body.user);
-  // req.session.user = req.body.user;
+router.post('/join', async (req, res, next) => {
+  const result = await userDB.addUser({
+    name: req.body.name,
+    pw: req.body.pw
+  });
+  // console.log(result);
   res.send({
     status: 'ok',
-    msg: '회원가입이 완료되었습니다.',
-    user: req.body.user
+    msg: '회원가입이 완료되었습니다.'
   });
 });
 
 //=== login
-router.post('/login', function(req, res, next) {
-  const tgUser = req.body.user;
-  const user = req.session.users.filter(user => user.id === tgUser.id)[0];
-  // console.log(user.pw, tgUser.pw);
+router.post('/login', async (req, res, next) => {
+  const user = await userDB.findUser({
+    name: req.body.name,
+    pw: req.body.pw
+  });
+  req.session.loged = true;
+  console.log('....', user);
   if (user) {
-    if (parseInt(user.pw) == parseInt(tgUser.pw)) {
-      res.send({
-        status: 'matched',
-        msg: '로그인에 성공했습니다.',
-        user: tgUser
-      });
-    } else {
-      res.send({
-        status: 'not',
-        msg: '비밀번호를 다시 입력해주세요.',
-        user: tgUser
-      });
-    }
+    res.send({
+      status: 'matched',
+      msg: '로그인에 성공했습니다.'
+    });
   } else {
     res.send({
       status: 'error',
-      msg: '회원정보가 없습니다. 회원가입을 해주세요.',
-      user: tgUser
+      msg: '회원정보가 없습니다. 회원가입을 해주세요.'
     });
   }
 });
 
 //=== login
 router.post('/logout', function(req, res, next) {
-  // req.session.destroy();
+  req.session.destroy();
   res.send({ status: 'ok', msg: '로그아웃 되었습니다.' });
 });
 

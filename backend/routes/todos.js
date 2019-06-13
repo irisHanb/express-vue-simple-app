@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var todos = require('../db/todos.json');
+var todoDB = require('../db/todo.js');
 
-router.get('/', function(req, res, next) {
-  console.log('toddos>>> ');
-
-  // console.log(todos);
+router.get('/', async (req, res, next) => {
+  const todos = await todoDB.getList();
+  console.log(todos);
   res.send(todos);
 });
 
