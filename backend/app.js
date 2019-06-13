@@ -33,9 +33,9 @@ app.use(
   })
 );
 
-app.use('/', indexRouter);
-// app.use('/todos', todoRouter);
-app.use('/todos', todoRouter);
+app.use('/api', indexRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/todos', todoRouter);
 
 // app.use('/login', (req, res, next) => {
 //   res.send('ok');

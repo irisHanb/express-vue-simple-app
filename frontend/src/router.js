@@ -4,8 +4,11 @@ import store from './store';
 
 Vue.use(Router);
 
-const requireAuth = () => (to, from, next) => {
-  if (store.getters.isAuthenticated) return next();
+const checkLogin = () => (to, from, next) => {
+  if (localStorage.userId) {
+    store.commit('login', localStorage.userId);
+    return next();
+  }
   next('/register');
 };
 
@@ -16,7 +19,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      beforeEnter: requireAuth(),
+      beforeEnter: checkLogin(),
       component: () =>
         import(/* webpackChunkName: "greeting" */ './views/Home.vue'),
       children: [

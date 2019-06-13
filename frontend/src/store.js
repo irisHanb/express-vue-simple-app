@@ -13,9 +13,8 @@ enhanceAccessToeken();
 
 export default new Vuex.Store({
   state: {
-    userName: null,
+    userId: null,
     userPw: null,
-    user: null,
     accessToken: null
   },
   getters: {
@@ -29,26 +28,29 @@ export default new Vuex.Store({
       localStorage.accessToken = 'ok';
       state.accessToken = 'ok';
     },
-    login(state) {
-      localStorage.accessToken = 'ok';
-      state.accessToken = 'ok';
+    login(state, userId) {
+      localStorage.userId = userId;
+      state.userId = userId;
+
+      console.log('store>   ', userId);
     },
     logout(state) {
-      state.accessToken = null;
-      delete localStorage.accessToken;
+      state.userId = null;
+      delete localStorage.userId;
     }
   },
   actions: {
-    join({ commit }, { name, pw }) {
-      return axios.post('/join', { name, pw }).then(res => {
-        commit('join');
+    join({ commit, dispatch }, { userId, pw }) {
+      return axios.post('/api/users/join', { userId, pw }).then(res => {
+        dispatch('login', { userId, pw });
       });
     },
-    login({ commit }, { name, pw }) {
-      return axios.post('/login', { name, pw }).then(res => {
+    login({ commit }, { userId, pw }) {
+      return axios.post('/api/users/login', { userId, pw }).then(res => {
         const data = res.data;
-        if (data.status === 'matched') {
-          commit('login');
+        if (data.status === 'logined') {
+          alert(data.msg);
+          commit('login', data.userId);
         } else {
           alert(data.msg);
           return;
@@ -56,7 +58,8 @@ export default new Vuex.Store({
       });
     },
     logout({ commit }) {
-      return axios.post('/logout', {}).then(res => {
+      return axios.get('/api/users/logout').then(res => {
+        alert(res.data.msg);
         commit('logout');
       });
     }

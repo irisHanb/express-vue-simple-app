@@ -18,15 +18,7 @@ export default {
   },
   components: { Register, Menus },
   created() {
-    // if (localStorage.user) delete localStorage.user;
-    // this.$http.post("/", {}).then(res => console.log("/>>", res.data));
-    // console.log(JSON.parse(localStorage.user));
-    // if (localStorage.user) {
-    //   this.$store.commit("login", JSON.parse(localStorage.user));
-    //   this.$router.push({ name: "home" });
-    // } else {
-    //   this.$router.push({ name: "register" });
-    // }
+    this.$http.get("/api/users").then(res => console.log("users> ", res.data));
   },
   mehtods: {}
 };

@@ -2,7 +2,7 @@
   <div class>
     <div class="header">
       <h2></h2>
-      <span v-if="user">{{user.id}} 님 반갑습니다.</span>
+      <span v-if="userId">{{userId}} 님 반갑습니다.</span>
       <a href @click.prevent="onLogout">logout</a>
     </div>
     <nav>
@@ -20,12 +20,15 @@ import Menus from "../components/Menus.vue";
 import { mapState } from "vuex";
 
 export default {
-  components: { Menus },
-  created() {
-    this.$http.get("/").then(res => console.log(res));
+  data() {
+    return {
+      // id: null
+    };
   },
+  components: { Menus },
+  created() {},
   computed: {
-    ...mapState(["user"])
+    ...mapState(["userId"])
   },
   methods: {
     onLogout() {
@@ -34,9 +37,6 @@ export default {
       });
     }
   }
-  // props: {
-  //   msg: String
-  // }
 };
 </script>
 

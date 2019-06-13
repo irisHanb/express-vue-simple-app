@@ -6,7 +6,10 @@
       <button type="button" @click="addTodo">add todo</button>
     </form>
     <ul>
-      <li v-for="todo in list" :key="todo.id">{{todo.text}}</li>
+      <li v-for="todo in list" :key="todo.id">
+        {{todo.text}}
+        <button>del</button>
+      </li>
     </ul>
   </div>
 </template>
@@ -19,13 +22,25 @@ export default {
     };
   },
   created() {
-    this.$http.get("/todos").then(res => {
+    this.$http.get("/api/todos").then(res => {
       this.list = [];
       this.list = res.data;
     });
   },
   methods: {
-    addTodo() {}
+    addTodo() {
+      const todo = {
+        id: 3,
+        text: this.todoText,
+        done: false
+      };
+      this.$http.post("/todos", { todo }).then(res => {
+        console.log("done>", res.data);
+
+        this.todoText = null;
+        this.list = [...res.data];
+      });
+    }
   }
 };
 </script>

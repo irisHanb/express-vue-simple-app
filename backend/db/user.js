@@ -1,14 +1,19 @@
-const users = [{ name: 'han', pw: 1111 }];
+const users = [{ userId: 'han', pw: 1111 }];
 
 const userDB = {
-  findUser({ name, pw }) {
+  getUsers() {
+    return Promise.resolve().then(() => users);
+  },
+  findUser({ userId, pw }) {
     // console.log({ name, pw });
     const validator = user =>
-      user.name === name && parseInt(user.pw) === parseInt(pw);
+      user.userId === userId && parseInt(userId) === parseInt(pw);
     return Promise.resolve().then(() => users.filter(validator)[0]);
   },
-  addUser({ name, pw }) {
-    return Promise.resolve().then(users.push({ name, pw }));
+  addUser({ userId, pw }) {
+    users.push({ userId, pw });
+    console.log('db::users> ', users);
+    return Promise.resolve().then(() => userId);
   }
 };
 

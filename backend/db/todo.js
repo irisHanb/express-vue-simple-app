@@ -13,7 +13,9 @@ const todos = [
 
 const todoDB = {
   addTodo(todo) {
-    return Promise.resolve().then(users.push(todo));
+    console.log('addtodo', todo);
+    todos.push(todo);
+    return Promise.resolve().then(() => todos);
   },
   getList() {
     return Promise.resolve().then(() => todos);

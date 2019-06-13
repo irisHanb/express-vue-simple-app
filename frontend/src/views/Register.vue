@@ -3,13 +3,7 @@
     <h2 class="page-title">Register</h2>
     <form action>
       <div class="form-field">
-        <input
-          type="text"
-          placeholder="아이디를 입력하세요."
-          v-model="name"
-          id="name"
-          v-validate="'required'"
-        >
+        <input type="text" placeholder="아이디를 입력하세요." v-model="id" id="id" v-validate="'required'">
       </div>
       <div class="form-field">
         <input
@@ -32,7 +26,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      name: null,
+      id: null,
       pw: null
     };
   },
@@ -46,7 +40,7 @@ export default {
     onJoin() {
       this.checkForm();
       this.$store
-        .dispatch("join", { name: this.name, pw: this.pw })
+        .dispatch("join", { userId: this.id, pw: this.pw })
         .then(res => {
           this.goHome();
         });
@@ -54,7 +48,7 @@ export default {
     onLogin() {
       this.checkForm();
       this.$store
-        .dispatch("login", { name: this.name, pw: this.pw })
+        .dispatch("login", { userId: this.id, pw: this.pw })
         .then(res => {
           this.goHome();
         });
@@ -63,7 +57,7 @@ export default {
       this.$router.push({ name: "home" });
     },
     checkForm() {
-      if (this.name === null || this.name.length <= 0) {
+      if (this.id === null || this.id.length <= 0) {
         alert("아이디 입력해주세요.");
         return;
       }
