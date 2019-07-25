@@ -14,10 +14,6 @@ var todoRouter = require('./routes/todos');
 var app = express();
 app.use(require('connect-history-api-fallback')());
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,16 +32,6 @@ app.use(
 app.use('/api', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/todos', todoRouter);
-
-// app.use('/login', (req, res, next) => {
-//   res.send('ok');
-// });
-// app.use('/users', usersRouter);
-// app.use('/movie', movieRouter);
-
-// app.use('/me', (req, res, next) => {
-//   res.send('me');
-// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
