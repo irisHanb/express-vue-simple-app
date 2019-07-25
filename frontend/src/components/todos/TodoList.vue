@@ -2,7 +2,7 @@
   <div class>
     <h2>todo list</h2>
     <form>
-      <input type="text" v-model="todoText">
+      <input type="text" v-model="todoText" />
       <button type="button" @click="addTodo">add todo</button>
     </form>
     <ul>
@@ -34,7 +34,7 @@ export default {
         text: this.todoText,
         done: false
       };
-      this.$http.post("/todos", { todo }).then(res => {
+      this.$http.post("/api/todos", { todo }).then(res => {
         console.log("done>", res.data);
 
         this.todoText = null;
